@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/pokemon-management/static/js/main.22b045ea.js",
+    "index.html": "/pokemon-management/index.html",
+    "main.22b045ea.js.map": "/pokemon-management/static/js/main.22b045ea.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.22b045ea.js"
+  ]
+}
