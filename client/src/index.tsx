@@ -27,6 +27,8 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
+      {/* Line 31 is for github pages */}
+      {/* <BrowserRouter basename="/pokemon-management"> */}
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <App />

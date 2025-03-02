@@ -139,6 +139,7 @@ pokemon-management/
 {
   id: number;
   name: string;
+  type: string;
   pokemon_id: string;
   moves: PokemonMove[];
 }
@@ -162,6 +163,7 @@ pokemon-management/
 ### pokemon
 - `id` (Primary Key, Auto Increment)
 - `name` (VARCHAR)
+- `type` (VARCHAR)
 - `pokemon_id` (VARCHAR, Unique)
 
 ### pokemon_moves
@@ -172,6 +174,32 @@ pokemon-management/
 ### trainer_pokemon
 - `trainer_id` (Foreign Key linking to trainers table)
 - `pokemon_reference` (Foreign Key linking to pokemon table)
+
+```
+
+┌─────────────┐       ┌──────────────────────┐       ┌───────────────┐
+│   trainers  │       │   trainer_pokemon    │       │    pokemon    │
+├─────────────┤       ├──────────────────────┤       ├───────────────┤
+│ id (PK)     │◄──────┤ trainer_id (PK, FK1) │       │ id (PK)       │
+│ name        │       │ pokemon_reference    │──────►│ name          │
+│             │       │    (PK, FK2)         │       │ type          │
+└─────────────┘       └──────────────────────┘       │ pokemon_id    │
+                                                     │  (Unique)     │
+                                                     └───────┬───────┘
+                                                             │
+                                                             │
+                                                             │
+                                                             │
+                                                             ▼
+                                                      ┌───────────────┐
+                                                      │ pokemon_moves │
+                                                      ├───────────────┤
+                                                      │ id (PK)       │
+                                                      │ pokemon_id    │
+                                                      │   (FK)        │
+                                                      │ move_name     │
+                                                      └───────────────┘
+```
 
 ## License
 

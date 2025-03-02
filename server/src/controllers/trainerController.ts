@@ -155,9 +155,15 @@ export const deleteTrainer = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
-    // When a trainer is deleted, all their Pokemon should be deleted
-    // This is handled by the ON DELETE CASCADE constraint in the database
+    // Get all Pokémon owned by this trainer before deleting
+    const [pokemonRows] = await pool.query(
+      `SELECT pokemon_reference FROM trainer_pokemon WHERE trainer_id = ?`,
+      [id]
+    );
     
+    const pokemonIds = (pokemonRows as any[]).map(row => row.pokemon_reference);
+    
+    // Delete the trainer
     const [result] = await pool.query(
       'DELETE FROM trainers WHERE id = ?',
       [id]
@@ -167,13 +173,22 @@ export const deleteTrainer = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Trainer not found' });
     }
     
-    res.status(200).json({ message: 'Trainer deleted successfully' });
+    // Delete Pokémon that aren't linked to any trainer anymore
+    const [deleteResult] = await pool.query(`
+      DELETE FROM pokemon 
+      WHERE pokemon_id IN (?) 
+      AND pokemon_id NOT IN (SELECT pokemon_reference FROM trainer_pokemon)
+    `, [pokemonIds]);
+    
+    res.status(200).json({
+      message: 'Trainer deleted successfully',
+      deletedPokemonCount: (deleteResult as any).affectedRows
+    });
   } catch (error) {
     console.error('Error deleting trainer:', error);
     res.status(500).json({ message: 'Server error' });
   }
-};
-
+}
 // Add a Pokemon to a trainer
 export const addPokemonToTrainer = async (req: Request, res: Response) => {
   try {
