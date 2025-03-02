@@ -1,0 +1,2 @@
+build_cmd = npm run build
+start_cmd = npm start
