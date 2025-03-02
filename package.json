@@ -1,11 +1,5 @@
 {
     "name": "pokemon-management",
     "version": "1.0.0",
-    "engines": {
-      "node": ">=16.0.0"
-    },
-    "scripts": {
-      "start": "cd server && npm start",
-      "build": "cd server && npm install && npm run build && cd ../client && npm install && npm run build"
-    }
+    "private": true
 }
