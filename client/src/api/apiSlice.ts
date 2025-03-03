@@ -21,7 +21,9 @@ import {
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api' }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: process.env.REACT_APP_API_URL || '/api'
+  }),
   tagTypes: ['Trainer', 'Pokemon', 'Move'],
   endpoints: (builder) => ({
     // Trainer endpoints
