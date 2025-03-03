@@ -1,6 +1,6 @@
 # Pokémon Management Application
 
-A full-stack web application for managing Pokémon trainers, their Pokémon, and their moves.
+A full-stack web application for managing Pokémon trainers, their Pokémon, and their moves. It also have a battle functionality
 
 ## Features
 
@@ -9,6 +9,7 @@ A full-stack web application for managing Pokémon trainers, their Pokémon, and
 - Manage Pokémon moves (add, delete)
 - Assign Pokémon to trainers
 - Search for trainers by name or Pokémon
+- Battle Pokemon System (Fire > Grass > Water > Fire)
 
 ## Tech Stack
 
@@ -35,13 +36,15 @@ pokemon-management/
 │   │   ├── api/                # RTK Query API definitions
 │   │   ├── components/         # Reusable UI components
 │   │   ├── features/           # Feature-specific components
-│   │   │   ├── trainers/
-│   │   │   ├── pokemon/
-│   │   │   └── moves/
+│   │   │   ├── trainers/       # Trainer management
+│   │   │   ├── pokemon/        # Pokémon management
+│   │   │   ├── battle/         # Battle feature
+│   │   │   ├── home/           # Home page
+│   │   │   └── search/         # Search functionality
 │   │   ├── store/              # Redux store configuration
 │   │   ├── types/              # TypeScript interfaces
-│   │   ├── App.tsx
-│   │   └── index.tsx
+│   │   ├── App.tsx             # Main application component
+│   │   └── index.tsx           # Entry point
 │   ├── package.json
 │   └── tsconfig.json
 │
@@ -49,10 +52,10 @@ pokemon-management/
 │   ├── src/
 │   │   ├── config/             # Database configuration
 │   │   ├── controllers/        # Request handlers
-│   │   ├── models/             # Database models
 │   │   ├── routes/             # API routes
 │   │   ├── types/              # TypeScript interfaces
 │   │   ├── utils/              # Helper functions
+│   │   ├── battle/             # Battle logic
 │   │   └── index.ts            # Entry point
 │   ├── package.json
 │   └── tsconfig.json
@@ -64,13 +67,28 @@ pokemon-management/
 
 ### Prerequisites
 
-- Node.js (v14+)
-- MySQL (v8+)
+- Node.js
+- MySQL
 
 ### Database Setup
 
 1. Create a MySQL database named `pokemon_management`
-2. Configure database connection in `server/.env` (sample provided in `server/.env.example`)
+2. Configure database connection in `server/.env`
+
+```
+# Create a database named pokemon_management in MySQL
+mysql -u root -p
+CREATE DATABASE pokemon_management;
+```
+
+```
+# Create a .env file with database connection details
+echo "DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=pokemon_management
+PORT=5000" > .env
+```
 
 ### Installation
 
@@ -200,7 +218,3 @@ pokemon-management/
                                                       │ move_name     │
                                                       └───────────────┘
 ```
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
