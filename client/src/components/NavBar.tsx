@@ -8,7 +8,6 @@ import {
   Typography,
   Button,
   InputBase,
-  IconButton,
   alpha,
   styled
 } from '@mui/material';

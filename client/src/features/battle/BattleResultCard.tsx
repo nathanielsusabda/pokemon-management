@@ -7,7 +7,6 @@ import {
   CardContent,
   Grid,
   Chip,
-  Divider,
   Paper
 } from '@mui/material';
 import { BattleResult } from '../../types';

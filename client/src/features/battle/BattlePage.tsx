@@ -20,7 +20,7 @@ import {
 } from '../../api/apiSlice';
 import TrainerBattleCard from './TrainerBattleCard';
 import BattleResultCard from './BattleResultCard';
-import { BattleResult, BattlePokemon, TrainerWithBattlePokemon } from '../../types';
+import { BattleResult, BattlePokemon } from '../../types';
 
 const BattlePage: React.FC = () => {
   const [selectedTrainer1, setSelectedTrainer1] = useState<number | null>(null);

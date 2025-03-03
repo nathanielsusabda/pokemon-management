@@ -1,5 +1,5 @@
 // client/src/features/search/SearchPage.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -30,8 +30,7 @@ const SearchPage: React.FC = () => {
   const {
     data: searchResults,
     isLoading,
-    error,
-    isFetching
+    error
   } = useSearchTrainersQuery(initialQuery, {
     skip: !initialQuery
   });
