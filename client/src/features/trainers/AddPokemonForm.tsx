@@ -11,30 +11,25 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  FormHelperText,
-  CircularProgress
+  FormHelperText
 } from '@mui/material';
-import { useGetAvailablePokemonForTrainerQuery } from '../../api/apiSlice';
+import { PokemonWithMoves } from '../../types';
 
 interface AddPokemonFormProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (pokemonId: string) => void;
+  availablePokemon: PokemonWithMoves[];
 }
 
 const AddPokemonForm: React.FC<AddPokemonFormProps> = ({
   open,
   onClose,
-  onSubmit
+  onSubmit,
+  availablePokemon
 }) => {
   const [pokemonId, setPokemonId] = useState('');
   const [error, setError] = useState('');
-  
-  const { 
-    data: availablePokemon = [], 
-    isLoading, 
-    error: fetchError 
-  } = useGetAvailablePokemonForTrainerQuery();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +54,7 @@ const AddPokemonForm: React.FC<AddPokemonFormProps> = ({
       <DialogTitle>Add Pokémon to Trainer</DialogTitle>
       <DialogContent>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <FormControl fullWidth error={!!error || !!fetchError} sx={{ mt: 1 }}>
+          <FormControl fullWidth error={!!error} sx={{ mt: 1 }}>
             <InputLabel id="pokemon-select-label">Pokémon</InputLabel>
             <Select
               labelId="pokemon-select-label"
@@ -67,26 +62,20 @@ const AddPokemonForm: React.FC<AddPokemonFormProps> = ({
               value={pokemonId}
               label="Pokémon"
               onChange={(e) => setPokemonId(e.target.value)}
-              disabled={isLoading}
             >
-              {isLoading ? (
-                <MenuItem value="">
-                  <em>Loading...</em>
-                </MenuItem>
-              ) : availablePokemon.length === 0 ? (
+              {availablePokemon.length === 0 ? (
                 <MenuItem value="">
                   <em>No available Pokémon</em>
                 </MenuItem>
               ) : (
                 availablePokemon.map((pokemon) => (
                   <MenuItem key={pokemon.pokemon_id} value={pokemon.pokemon_id}>
-                    {pokemon.name} ({pokemon.type})
+                    {pokemon.name}
                   </MenuItem>
                 ))
               )}
             </Select>
             {error && <FormHelperText>{error}</FormHelperText>}
-            {fetchError && <FormHelperText>Error loading Pokémon</FormHelperText>}
           </FormControl>
         </Box>
       </DialogContent>
@@ -95,9 +84,9 @@ const AddPokemonForm: React.FC<AddPokemonFormProps> = ({
         <Button 
           onClick={handleSubmit} 
           variant="contained"
-          disabled={availablePokemon.length === 0 || isLoading}
+          disabled={availablePokemon.length === 0}
         >
-          {isLoading ? <CircularProgress size={24} /> : 'Add'}
+          Add
         </Button>
       </DialogActions>
     </Dialog>
