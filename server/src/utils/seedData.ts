@@ -23,50 +23,57 @@ export async function seedDatabase() {
       { name: 'Brock' }
     ];
     
-    // Insert trainers
-    for (const trainer of trainers) {
+    // Define distinct Pokémon for each trainer
+    const trainerPokemon = [
+      // Ash's Pokémon
+      [
+        { name: 'Pikachu', type: 'Water', moves: ['Thunderbolt', 'Quick Attack', 'Iron Tail'] },
+        { name: 'Charizard', type: 'Fire', moves: ['Flamethrower', 'Dragon Claw', 'Fly'] },
+        { name: 'Bulbasaur', type: 'Grass', moves: ['Vine Whip', 'Razor Leaf', 'Solar Beam'] }
+      ],
+      // Misty's Pokémon
+      [
+        { name: 'Starmie', type: 'Grass', moves: ['Water Gun', 'Rapid Spin', 'Psychic'] },
+        { name: 'Goldeen', type: 'Water', moves: ['Horn Attack', 'Waterfall', 'Fury Attack'] },
+        { name: 'Psyduck', type: 'Fire', moves: ['Confusion', 'Water Gun', 'Scratch'] }
+      ],
+      // Brock's Pokémon
+      [
+        { name: 'Onix', type: 'Grass', moves: ['Rock Throw', 'Bind', 'Tackle'] },
+        { name: 'Geodude', type: 'Water', moves: ['Rock Throw', 'Seismic Toss', 'Tackle'] },
+        { name: 'Vulpix', type: 'Fire', moves: ['Ember', 'Quick Attack', 'Confuse Ray'] }
+      ]
+    ];
+    
+    // Insert trainers and their Pokémon
+    for (let i = 0; i < trainers.length; i++) {
+      const trainer = trainers[i];
+      const pokemon = trainerPokemon[i];
+      
+      // Insert trainer
       const [trainerResult] = await pool.query(
         'INSERT INTO trainers (name) VALUES (?)',
         [trainer.name]
       );
       const trainerId = (trainerResult as any).insertId;
       
-      // Create Pokemon for each trainer
-      const pokemon = [
-        {
-          name: `${trainer.name}'s Gyrados`,
-          moves: ['Aqua Tail', 'Hyper Beam', 'Hurricane'],
-          type: 'Water'
-        },
-        {
-          name: `${trainer.name}'s Charizard`,
-          moves: ['Flamethrower', 'Dragon Claw', 'Fly'],
-          type: 'Fire'
-        },
-        {
-          name: `${trainer.name}'s Bulbasaur`,
-          moves: ['Vine Whip', 'Razor Leaf', 'Solar Beam'],
-          type: 'Grass'
-        }
-      ];
-      
-      // Insert Pokemon for this trainer
+      // Insert Pokémon for this trainer
       for (const poke of pokemon) {
         const pokemonId = uuidv4();
         
-        // Insert Pokemon
+        // Insert Pokémon
         await pool.query(
           'INSERT INTO pokemon (name, type, pokemon_id) VALUES (?, ?, ?)',
           [poke.name, poke.type, pokemonId]
         );
         
-        // Link Pokemon to trainer
+        // Link Pokémon to trainer
         await pool.query(
           'INSERT INTO trainer_pokemon (trainer_id, pokemon_reference) VALUES (?, ?)',
           [trainerId, pokemonId]
         );
         
-        // Add moves for this Pokemon
+        // Add moves for this Pokémon
         for (const moveName of poke.moves) {
           await pool.query(
             'INSERT INTO pokemon_moves (pokemon_id, move_name) VALUES (?, ?)',

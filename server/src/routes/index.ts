@@ -17,7 +17,8 @@ import {
   deletePokemon,
   addMoveToPokemon,
   updatePokemonMove,
-  deletePokemonMove
+  deletePokemonMove,
+  getAvailablePokemonForTrainer
 } from '../controllers/pokemonController';
 import {
   battlePokemon,
@@ -42,6 +43,7 @@ router.get('/pokemon/:id', getPokemonById as any);
 router.post('/pokemon', createPokemon as any);
 router.put('/pokemon/:id', updatePokemon as any);
 router.delete('/pokemon/:id', deletePokemon as any);
+router.get('/pokemon/available-for-trainer', getAvailablePokemonForTrainer as any);
 
 // Pokemon moves routes
 router.post('/moves', addMoveToPokemon as any);

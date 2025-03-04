@@ -53,7 +53,8 @@ export async function initializeDatabase() {
         pokemon_reference VARCHAR(255) NOT NULL,
         PRIMARY KEY (trainer_id, pokemon_reference),
         FOREIGN KEY (trainer_id) REFERENCES trainers(id) ON DELETE CASCADE,
-        FOREIGN KEY (pokemon_reference) REFERENCES pokemon(pokemon_id) ON DELETE CASCADE
+        FOREIGN KEY (pokemon_reference) REFERENCES pokemon(pokemon_id) ON DELETE CASCADE,
+        UNIQUE (pokemon_reference)
       )
     `);
 

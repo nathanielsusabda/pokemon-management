@@ -189,54 +189,42 @@ export const deleteTrainer = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error' });
   }
 }
-// Add a Pokemon to a trainer
 export const addPokemonToTrainer = async (req: Request, res: Response) => {
   try {
     const { trainerId, pokemonId } = req.body;
     
     if (!trainerId || !pokemonId) {
-      return res.status(400).json({ message: 'Trainer ID and Pokemon ID are required' });
+      return res.status(400).json({ message: 'Trainer ID and Pokémon ID are required' });
     }
     
-    // Check if trainer exists
-    const [trainerRows] = await pool.query(
-      'SELECT * FROM trainers WHERE id = ?',
-      [trainerId]
-    );
-    
-    if ((trainerRows as any[]).length === 0) {
-      return res.status(404).json({ message: 'Trainer not found' });
-    }
-    
-    // Check if Pokemon exists
-    const [pokemonRows] = await pool.query(
-      'SELECT * FROM pokemon WHERE pokemon_id = ?',
+    // Check if this Pokémon is already assigned to ANY trainer
+    const [existingAssignments] = await pool.query(
+      'SELECT * FROM trainer_pokemon WHERE pokemon_reference = ?',
       [pokemonId]
     );
     
-    if ((pokemonRows as any[]).length === 0) {
-      return res.status(404).json({ message: 'Pokemon not found' });
+    if ((existingAssignments as any[]).length > 0) {
+      const existingTrainerId = (existingAssignments as any[])[0].trainer_id;
+      
+      if (existingTrainerId == trainerId) {
+        return res.status(400).json({ message: 'This Pokémon is already assigned to this trainer' });
+      } else {
+        return res.status(400).json({ 
+          message: 'This Pokémon is already assigned to another trainer',
+          currentTrainerId: existingTrainerId 
+        });
+      }
     }
     
-    // Check if this Pokemon is already assigned to this trainer
-    const [existingRows] = await pool.query(
-      'SELECT * FROM trainer_pokemon WHERE trainer_id = ? AND pokemon_reference = ?',
-      [trainerId, pokemonId]
-    );
-    
-    if ((existingRows as any[]).length > 0) {
-      return res.status(400).json({ message: 'This Pokemon is already assigned to this trainer' });
-    }
-    
-    // Add Pokemon to trainer
+    // Add Pokémon to trainer
     await pool.query(
       'INSERT INTO trainer_pokemon (trainer_id, pokemon_reference) VALUES (?, ?)',
       [trainerId, pokemonId]
     );
     
-    res.status(201).json({ message: 'Pokemon added to trainer successfully' });
+    res.status(201).json({ message: 'Pokémon added to trainer successfully' });
   } catch (error) {
-    console.error('Error adding Pokemon to trainer:', error);
+    console.error('Error adding Pokémon to trainer:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

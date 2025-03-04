@@ -105,6 +105,11 @@ export const apiSlice = createApi({
       query: (id) => `/pokemon/${id}`,
       providesTags: (result, error, id) => [{ type: 'Pokemon', id }]
     }),
+
+    getAvailablePokemonForTrainer: builder.query<PokemonWithMoves[], void>({
+      query: () => '/pokemon/available-for-trainer',
+      providesTags: [{ type: 'Pokemon', id: 'AVAILABLE_FOR_TRAINER' }]
+    }),
     
     createPokemon: builder.mutation<Pokemon, CreatePokemonRequest>({
       query: (body) => ({
@@ -205,6 +210,7 @@ export const {
   useSearchTrainersQuery,
   useGetPokemonQuery,
   useGetPokemonByIdQuery,
+  useGetAvailablePokemonForTrainerQuery,
   useCreatePokemonMutation,
   useUpdatePokemonMutation,
   useDeletePokemonMutation,
