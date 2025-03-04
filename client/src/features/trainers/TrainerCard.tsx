@@ -20,7 +20,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { TrainerWithPokemon } from '../../types';
+import { TrainerWithPokemon, PokemonWithMoves } from '../../types';
 import TrainerForm from './TrainerForm';
 import AddPokemonForm from './AddPokemonForm';
 
@@ -44,6 +44,7 @@ interface TrainerCardProps {
   onEdit: (id: number, data: { name: string }) => void;
   onDelete: (id: number) => void;
   onAddPokemon: (trainerId: number, pokemonId: string) => void;
+  availablePokemon: PokemonWithMoves[];
 }
 
 const TrainerCard: React.FC<TrainerCardProps> = ({
@@ -51,6 +52,7 @@ const TrainerCard: React.FC<TrainerCardProps> = ({
   onEdit,
   onDelete,
   onAddPokemon,
+  availablePokemon
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -167,6 +169,9 @@ const TrainerCard: React.FC<TrainerCardProps> = ({
         open={addPokemonDialogOpen}
         onClose={() => setAddPokemonDialogOpen(false)}
         onSubmit={(pokemonId) => onAddPokemon(trainer.id!, pokemonId)}
+        availablePokemon={availablePokemon.filter(
+          (p) => !trainer.pokemon.some((tp) => tp.pokemon_id === p.pokemon_id)
+        )}
       />
     </Card>
   );
