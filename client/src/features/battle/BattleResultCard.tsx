@@ -137,7 +137,6 @@ const BattleResultCard: React.FC<BattleResultCardProps> = ({ result }) => {
           • Fire is super effective against Grass<br />
           • Water is super effective against Fire<br />
           • Grass is super effective against Water<br />
-          • Electric is strong but follows regular type matchups
         </Typography>
       </Box>
     </Box>

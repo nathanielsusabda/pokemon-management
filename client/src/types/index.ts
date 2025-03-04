@@ -8,7 +8,7 @@ export interface Trainer {
 export interface Pokemon {
   id?: number;
   name: string;
-  type: string;  // Add this field
+  type: string;
   pokemon_id: string;
 }
 

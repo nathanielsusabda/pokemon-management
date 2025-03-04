@@ -28,7 +28,6 @@ const getTypeByName = (name: string): string => {
 };
 
 // Battle two Pokemon
-// In battleController.ts, update the battlePokemon function
 export const battlePokemon = async (req: Request, res: Response) => {
   try {
     const { pokemon1Id, pokemon2Id } = req.body;
