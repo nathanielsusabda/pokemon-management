@@ -117,7 +117,7 @@ const TrainerPage: React.FC = () => {
                   onEdit={handleUpdateTrainer}
                   onDelete={handleDeleteTrainer}
                   onAddPokemon={handleAddPokemon}
-                  // availablePokemon={pokemon}
+                  availablePokemon={pokemon}
                 />
               </Grid>
             ))
